@@ -1,0 +1,76 @@
+<div
+  (window:scroll)="onScroll($event)"
+  id="backdrop"
+  class="col-sm-6 col-sm-offset-3"
+>
+  <div id="search-container">
+    <a
+      *ngFor="let type of types"
+      (click)="onSelect(type)"
+      [class.selected]="type === selectedType"
+      class="search-switcher" href="javasript:;"
+    >
+      {{type.name}}
+    </a>
+
+    <br/>
+
+    <input
+      #searchBox
+      (keyup.enter)="onEnter(searchBox.value)"
+      (keyup)="onKey($event)"
+      type="text" name="query"
+      id="search-box"
+    >
+  </div>
+
+  <br/>
+  <div id="results" class="col-sm-12">
+    <div
+      *ngFor="let type of types"
+      id="results-{{type}}"
+    >
+      <ng-container *ngIf="type.name === 'web'">
+        <div
+          *ngFor="let result of results[type.name]"
+          class="web-result"
+        >
+          <a href="{{result.url}}" [innerHTML]="result.title"></a>
+          <br/>
+          <span class="web-abstract" [innerHTML]="result.abstract"></span>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="type.name === 'images'">
+        <div
+          *ngFor="let result of results[type.name]"
+          style="display: inline-block"
+        >
+          <a href="{{result.clickurl}}">
+            <img
+              src="{{result.thumbnailurl}}"
+              width="{{result.thumbnailwidth}}"
+              height="{{result.thumbnailheight}}"
+            >
+          </a>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="type.name === 'videos'">
+        <div
+          *ngFor="let result of results[type.name]"
+          class="video-container"
+        >
+          <a href="{{result.url}}">
+            <div class="col-sm-6">
+              <img class="video-thumbnail" src="{{result.image}}">
+            </div>
+            <div class="col-sm-6 video-description">
+              {{result.title}} <br/>
+              {{result.duration}} <br/>
+              {{result.domain}} <br/>
+            </div>
+          </a>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
